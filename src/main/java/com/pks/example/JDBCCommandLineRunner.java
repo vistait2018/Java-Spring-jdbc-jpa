@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 @Component
 public class JDBCCommandLineRunner implements CommandLineRunner {
@@ -39,7 +40,32 @@ public class JDBCCommandLineRunner implements CommandLineRunner {
         insertDataUsingPreparedStatement(2,"sewing-machine","bola","lagos");
         insertDataUsingNamedJdbcTemplate(3,"marker","bola","lagos");
         deleteData(2);
+        insertBatchUpdate(5);
     }
+
+    private void insertBatchUpdate(int count)  {
+            String query = """
+                              insert into order_details 
+                              values(:order_id,
+                              :item_name,
+                              :customer_name,
+                              :address)
+                          """;
+
+            Map[] params = new HashMap[count];
+            IntStream.range(0,count).forEach(i->{
+                Map param = new HashMap();
+                param.put("order_id",i+4);
+                param.put("item_name","itemName"+i);
+                param.put("customer_name","customerName"+i);
+                param.put("address","address+"+i);
+                params[i]= param;
+
+        });
+
+            int[] rowCounts = namedParameterJdbcTemplate.batchUpdate(query,params);
+            System.out.println("Batch Update "+ rowCounts.length);
+}
 
     private void deleteData(int orderId) {
         System.out.println("deleting order_id " + orderId);
