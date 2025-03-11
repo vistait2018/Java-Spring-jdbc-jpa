@@ -1,5 +1,7 @@
 package com.pks.example;
 
+import com.pks.example.model.OrderDetails;
+import com.pks.example.model.OrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -41,6 +44,13 @@ public class JDBCCommandLineRunner implements CommandLineRunner {
         insertDataUsingNamedJdbcTemplate(3,"marker","bola","lagos");
         deleteData(2);
         insertBatchUpdate(5);
+        selectOrder();
+    }
+
+    private void selectOrder() {
+        List<OrderDetails> orderDetails =
+                jdbcTemplate.query("select * from order_details",new OrderMapper());
+        System.out.println("selecting all orders "+ orderDetails);
     }
 
     private void insertBatchUpdate(int count)  {
