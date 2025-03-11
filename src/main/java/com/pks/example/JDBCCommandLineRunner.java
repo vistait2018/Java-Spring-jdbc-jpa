@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -45,6 +47,30 @@ public class JDBCCommandLineRunner implements CommandLineRunner {
         deleteData(2);
         insertBatchUpdate(5);
         selectOrder();
+        selectSingleOrder(5);
+    }
+
+    private void selectSingleOrder(int orderId) {
+
+        try{
+            System.out.println("selecting with order_id " + orderId);
+
+            String query = """
+                              select * from order_details 
+                              where order_id = :orderId
+                          """;
+            MapSqlParameterSource mapSqlParameterSource =
+                    new MapSqlParameterSource();
+            mapSqlParameterSource.addValue("orderId",orderId);
+
+            OrderDetails orderDetails =
+                    namedParameterJdbcTemplate.queryForObject(query,
+                            mapSqlParameterSource,new OrderMapper());
+            System.out.println("selecting single order "+ orderDetails);
+        }catch(EmptyResultDataAccessException er){
+            System.out.println("no data with id "+orderId + "found" + er.getLocalizedMessage());
+        }
+
     }
 
     private void selectOrder() {
