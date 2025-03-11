@@ -14,5 +14,6 @@ public class JPAComandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
        orderRepository.getAllOrder();
+       orderRepository.createAndGetOrder();
     }
 }
