@@ -48,6 +48,18 @@ public class JDBCCommandLineRunner implements CommandLineRunner {
         insertBatchUpdate(5);
         selectOrder();
         selectSingleOrder(5);
+        selectSingleColumnOrder();
+    }
+
+    private void selectSingleColumnOrder() {
+        System.out.println("selecting single column" );
+
+        String query = """
+                              select item_name from order_details 
+                              
+                          """;
+      List<String> singleItems=  jdbcTemplate.queryForList(query,String.class);
+        System.out.println("Printing single items "+singleItems);
     }
 
     private void selectSingleOrder(int orderId) {
