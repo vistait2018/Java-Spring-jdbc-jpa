@@ -7,6 +7,8 @@ import com.pks.example.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
@@ -79,6 +81,13 @@ public class JPAComandLineRunner implements CommandLineRunner {
         customerDetails.stream().forEach(c->{
             System.out.println(c.getCustomerName());
             System.out.println(c.getItemName());
+
+            System.out.println("WOrking with Pagination");
+            Page<OrderEntity> all = orderJpaRepository.findAll(Pageable.ofSize(10));
+            System.out.println(all.getTotalPages());
+            System.out.println(all.getSize());
+            System.out.println(all.nextPageable().getPageNumber());
+            System.out.println(all.getNumberOfElements());
         });
     }
 }
