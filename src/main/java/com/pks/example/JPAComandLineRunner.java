@@ -8,7 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Component
 @Profile("jpa")
@@ -39,5 +42,26 @@ public class JPAComandLineRunner implements CommandLineRunner {
 
       orderById.get().setAddress("Lagos");
       orderJpaRepository.save(orderById.get());
+
+      orderJpaRepository.deleteById(9);
+
+      List<OrderEntity> orderEntityList = new ArrayList<>();
+        IntStream.range(20,100)
+                .forEach(e->{
+                    OrderEntity o =new OrderEntity();
+                    o.setOrderId(e);
+                    o.setItemName("item "+e);
+                   o.setCustomerName("name "+e);
+                   o.setAddress("address "+e);
+                   orderEntityList.add(o);
+                });
+
+        orderJpaRepository.saveAll(orderEntityList);
+
+        System.out.println("save orders " +orderEntityList);
+        List<OrderEntity> allOrders = orderJpaRepository.findAll();
+        System.out.println("ALl orders "+allOrders);
+
+
     }
 }
