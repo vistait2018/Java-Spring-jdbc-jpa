@@ -1,6 +1,7 @@
 package com.pks.example;
 
 import com.pks.example.entities.OrderEntity;
+import com.pks.example.model.CustomerDetails;
 import com.pks.example.repository.OrderJpaRepository;
 import com.pks.example.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,12 @@ public class JPAComandLineRunner implements CommandLineRunner {
                 .findCustomerNameUsingId("name 66",
                         Sort.by("itemName"));
         System.out.println(sortedOrderEntities);
+
+        List<CustomerDetails> customerDetails = orderJpaRepository
+                .findOrderEntitiesByItemName("item 69");
+        customerDetails.stream().forEach(c->{
+            System.out.println(c.getCustomerName());
+            System.out.println(c.getItemName());
+        });
     }
 }

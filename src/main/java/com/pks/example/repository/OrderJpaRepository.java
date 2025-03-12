@@ -1,6 +1,7 @@
 package com.pks.example.repository;
 
 import com.pks.example.entities.OrderEntity;
+import com.pks.example.model.CustomerDetails;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,6 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity,Integer> {
 
     @Query("select o from OrderEntity o where o.customerName = :customerName")
     List<OrderEntity> findCustomerNameUsingId(@Param("customerName") String customerName, Sort sort);
+
+    List<CustomerDetails> findOrderEntitiesByItemName(String itemName);
 }
