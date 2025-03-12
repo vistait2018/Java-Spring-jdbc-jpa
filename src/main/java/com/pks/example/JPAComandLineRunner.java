@@ -62,6 +62,10 @@ public class JPAComandLineRunner implements CommandLineRunner {
         List<OrderEntity> allOrders = orderJpaRepository.findAll();
         System.out.println("ALl orders "+allOrders);
 
+        List<OrderEntity> orderEntities = orderJpaRepository
+                .findOrderEntitiesByItemNameOrderByOrderId("item 71");
+        System.out.println(orderEntities);
+
 
     }
 }
