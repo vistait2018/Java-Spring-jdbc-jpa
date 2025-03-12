@@ -6,6 +6,7 @@ import com.pks.example.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -67,5 +68,9 @@ public class JPAComandLineRunner implements CommandLineRunner {
         System.out.println(orderEntities);
 
 
+        List<OrderEntity> sortedOrderEntities = orderJpaRepository
+                .findCustomerNameUsingId("name 66",
+                        Sort.by("itemName"));
+        System.out.println(sortedOrderEntities);
     }
 }
